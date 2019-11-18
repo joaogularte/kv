@@ -24,6 +24,4 @@ jobs:
         mix coveralls
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v1.0.1
-      with:
-        github-token:${{ secrets.GITHUB_TOKEN }}
 
