@@ -1,4 +1,4 @@
-# KV
+# KV [![Build Status](https://github.com/joaogularte/kv/workflows/Elixir%20CI/badge.svg)](https://github.com/joaogularte/kv/commit/73eefca6949685660b2c692399c997825b5a578f/checks?check_suite_id=316443935)
 
 **TODO: Add description**
 
