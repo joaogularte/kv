@@ -19,15 +19,14 @@ jobs:
         mix local.hex --force
         mix deps.get
     - name: Run Tests
-      env:
-        TOKEN: ${{ secrets.TOKEN }}
+      #env:
+      #  TOKEN: ${{ secrets.TOKEN }}
       run: |
         mix test
         mix coveralls
-        MIX_ENV=test mix coveralls.post --token $TOKEN  --branch "master" --name "local host" --committer "committer name" --sha "fd80a4c" --message "commit message" 
+      #  MIX_ENV=test mix coveralls.post --token $TOKEN  --branch "master" --name "local host" --committer "committer name" --sha "fd80a4c" --message "commit message" 
     
-    #- name: Coveralls GitHub Action
-    #  uses: coverallsapp/github-action@v1.0.1
-    #  with:
-    #    github-token: ${{ secrets.GITHUB_TOKEN }}
-    #    path-to-lcov: "./cover/"
+    - name: Coveralls GitHub Action
+      uses: coverallsapp/github-action@v1.0.1
+      with:
+        github-token: ${{ secrets.TOKEN }}
