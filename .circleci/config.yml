@@ -36,15 +36,11 @@ jobs:
      - checkout
      - restore_cache:
         key: deps-cache-{{ checksum "mix.lock" }}
-     - run:
-         name: Setup Variables
-         command: echo "export TOKEN=$COVERALLS_TOKEN" >> $BASH_ENV
      - run: mix test
-     - run: 
-         command: mix coveralls.circle
-         environment:
-           COVERALLS_REPO_TOKEN: $TOKEN
-
+     overide:
+     - mix coveralls.circle
+#     - run: 
+#         command: MIX_ENV=test mix coveralls.circle
    format_check:
      docker:
      - image: circleci/elixir:1.9.0 
