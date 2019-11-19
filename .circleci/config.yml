@@ -3,8 +3,8 @@ jobs:
    build:
     docker:
     - image: circleci/elixir:1.8.2
-        environment:
-          MIX_ENV: test
+      environment:
+        MIX_ENV: test
 
     steps:
     - checkout
@@ -45,8 +45,8 @@ jobs:
   format_check:
     docker:
     - image: circleci/elixir:1.8.2
-        environment:
-          MIX_ENV: test
+      environment:
+        MIX_ENV: test
     steps:
     - checkout
     - run: mix format --check-formatted
