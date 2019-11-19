@@ -20,7 +20,7 @@ jobs:
         mix deps.get
     - name: Run Tests
       env:
-        $TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         mix test
         mix coveralls
