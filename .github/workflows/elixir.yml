@@ -19,10 +19,12 @@ jobs:
         mix local.hex --force
         mix deps.get
     - name: Run Tests
+      env:
+        $TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         mix test
         mix coveralls
-        MIX_ENV=test mix coveralls.post --token ${{ secrets.GITHUB_TOKEN }}  --branch "master" --name "local host" --committer "committer name" --sha "fd80a4c" --message "commit message" 
+        MIX_ENV=test mix coveralls.post --token $TOKEN  --branch "master" --name "local host" --committer "committer name" --sha "fd80a4c" --message "commit message" 
     
     #- name: Coveralls GitHub Action
     #  uses: coverallsapp/github-action@v1.0.1
