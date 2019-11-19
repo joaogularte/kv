@@ -1,4 +1,4 @@
-# KV [![CircleCI](https://circleci.com/gh/joaogularte/kv/tree/master.svg?style=svg)](https://circleci.com/gh/joaogularte/kv/tree/master)
+# KV [![CircleCI](https://circleci.com/gh/joaogularte/kv/tree/master.svg?style=svg)](https://circleci.com/gh/joaogularte/kv/tree/master) [![Coverage Status](https://coveralls.io/repos/github/joaogularte/kv/badge.svg?branch=master)](https://coveralls.io/github/joaogularte/kv?branch=master)
 
 **TODO: Add description**
 
