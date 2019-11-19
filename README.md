@@ -1,4 +1,4 @@
-# KV [![Build Status](https://github.com/joaogularte/kv/workflows/Elixir%20CI/badge.svg)](https://github.com/joaogularte/kv/actions?query=workflow%3A%22Elixir+CI%22)
+# KV [![CircleCI](https://circleci.com/gh/joaogularte/kv/tree/master.svg?style=svg)](https://circleci.com/gh/joaogularte/kv/tree/master)
 
 **TODO: Add description**
 
