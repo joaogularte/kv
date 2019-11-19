@@ -40,11 +40,11 @@ jobs:
      - run: 
          command: MIX_ENV=test mix coveralls.circle
          environment:
-           COVERALLS_REPO_TOKEN: ${COVERALLS_TOKEN}
+           COVERALLS_REPO_TOKEN: $COVERALLS_TOKEN
 
    format_check:
      docker:
-     - image: circleci/elixir:1.9.0
+     - image: circleci/elixir:1.9.0 
        environment:
          MIX_ENV: test
      steps:
