@@ -41,7 +41,7 @@ jobs:
          command: echo "export TOKEN=$COVERALLS_TOKEN" >> $BASH_ENV
      - run: mix test
      - run: 
-         command: MIX_ENV=test mix coveralls.circle
+         command: mix coveralls.circle
          environment:
            COVERALLS_REPO_TOKEN: $TOKEN
 
