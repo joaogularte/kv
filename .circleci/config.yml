@@ -36,11 +36,14 @@ jobs:
      - checkout
      - restore_cache:
         key: deps-cache-{{ checksum "mix.lock" }}
+     - run:
+         name: Setup Variables
+         command: echo "export TOKEN=$COVERALLS_TOKEN" >> $BASH_ENV
      - run: mix test
      - run: 
          command: MIX_ENV=test mix coveralls.circle
          environment:
-           COVERALLS_REPO_TOKEN: $COVERALLS_TOKEN
+           COVERALLS_REPO_TOKEN: $TOKEN
 
    format_check:
      docker:
