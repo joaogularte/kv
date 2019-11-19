@@ -22,8 +22,10 @@ jobs:
       run: |
         mix test
         mix coveralls
-    - name: Coveralls GitHub Action
-      uses: coverallsapp/github-action@v1.0.1
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: "./cover/"
+        MIX_ENV=test mix coveralls.post --token ${{ secrets.GITHUB_TOKEN }}  --branch "master" --name "local host" --committer "committer name" --sha "fd80a4c" --message "commit message" 
+    
+    #- name: Coveralls GitHub Action
+    #  uses: coverallsapp/github-action@v1.0.1
+    #  with:
+    #    github-token: ${{ secrets.GITHUB_TOKEN }}
+    #    path-to-lcov: "./cover/"
