@@ -1,6 +1,8 @@
 defmodule KV.Bucket do
   use Agent
-
+  @moduledoc """
+  Providers a group of function in order to manage the bucket
+  """
   @doc """
   Start a new bucket
   """
