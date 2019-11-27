@@ -12,7 +12,7 @@ defmodule KV.Bucket do
   Get a value from bucket by key
   """
   def get(bucket, key) do
-    Agent.get(bucket, fn maps -> Map.get(maps, key) end)
+    Agent.get(bucket, &Map.get(&1, key))
   end
 
   @doc """
