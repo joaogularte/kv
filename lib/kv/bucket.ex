@@ -19,7 +19,7 @@ defmodule KV.Bucket do
   Put the value for the given key in the bucket
   """
   def put(bucket, key, value) do
-    Agent.update(bucket, fn maps -> Map.put(maps, key, value) end)
+    Agent.update(bucket, &Map.put(&1, key, value))
   end
 
   @doc """
