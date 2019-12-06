@@ -62,4 +62,21 @@ defmodule KV.Registry do
             {:noreply, {names, refs}}
         end 
     end
+    
+    @doc """
+    
+    """
+    @impl true
+    def handle_info({:DOWN, ref, :process, _pid, _reason}, {names, refs}) do
+        {name, refs} = Map.pop(refs, ref)
+        names = Map.delete(names, name)
+        {:noreply, {names, refs}}
+    end
+    @doc """
+    
+    """
+    @impl true
+    def handle_info(_msg, state) do
+        {:noreply, state}
+    end
 end
