@@ -32,7 +32,7 @@ defmodule KV.Registry do
     def init(:ok) do
         names = %{}
         refs = %{}
-        {:ok, {name, refs}}
+        {:ok, {names, refs}}
     end
 
     @doc """
@@ -41,8 +41,7 @@ defmodule KV.Registry do
     @impl true
     def handle_call({:lookup, name}, _from, state) do
         {names, _} = state
-        bucket = Map.fetch(names, name ) 
-        {:reply, bucket, names}
+        {:reply, Map.fetch(names, name), state}
     end
     
 
