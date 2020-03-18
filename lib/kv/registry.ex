@@ -4,29 +4,48 @@ defmodule KV.Registry do
     ##Server Callback
     @impl true
     def init(:ok) do
-        {:ok, %{}}
+        names = %{}
+        refs = %{}
+        {:ok, {names, refs}}
     end
 
     @impl true
     def handle_call({:lookup, name}, _from, state) do
-        {:reply, Map.fetch(state, name), state}
+        {names, _} = state
+        {:reply, Map.fetch(names, name), state}
     end
-
+    
+    @implt true
     def handle_call(:all, _from, state) do
-        {:reply, state, state}
+        {names, _} = state
+        {:reply, names, state}
     end
     
     @impl true
-    def handle_cast({:create, name}, state) do
-        if Map.has_key?(state, name) do
-            {:noreply, state}
+    def handle_cast({:create, name}, {names, refs}) do
+        if Map.has_key?(names, name) do
+            {:noreply, {names, refs}}
         else
             {:ok, bucket } = KV.Bucket.start_link([])
-            new_state = Map.put(state, name, bucket)
+            ref_monitor = Process.monitor(bucket)
+            new_refs = Map.put(refs, ref_monitor, name)
+            new_names = Map.put(names, name, bucket)
+            new_state = {new_names, new_refs}
             {:noreply, new_state}
         end
     end
 
+    @implt true
+    def handle_info({:DOWN, ref, :process, _pid, _reason}, {names, refs}) do
+        {name, refs} = Map.pop(refs, ref)
+        names = Map.delete(names, name)
+        {:noreply, {names, refs}}
+    end 
+
+    @implt true
+    def handle_info(_msg, state) do
+        {:noreply, state}
+    end
 
     ## Client API
     @doc """
@@ -57,4 +76,5 @@ defmodule KV.Registry do
     def create(server, name) do
         GenServer.cast(server, {:create, name})
     end
+
 end
