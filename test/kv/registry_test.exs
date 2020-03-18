@@ -1,6 +1,12 @@
 defmodule KV.RegistryTest do
     use ExUnit.Case, async: true
 
+    doctest KV.Registry
+
+    setup_all do 
+        IO.puts("Starting Registry test")
+    end
+
     setup do
         registry = start_supervised!(KV.Registry)
         %{registry: registry}
@@ -19,5 +25,12 @@ defmodule KV.RegistryTest do
         KV.Registry.create(registry, "shopping")
         KV.Registry.create(registry, "market")
         assert KV.Registry.all(registry)
+    end
+
+    test "removes buckets on exit", %{registry: registry} do
+        KV.Registry.create(registry, "shopping")
+        {:ok, bucket_shopping} = KV.Registry.lookup(registry, "shopping")
+        Agent.stop(bucket_shopping)
+        assert KV.Registry.lookup(registry, "shopping") == :error
     end
 end
