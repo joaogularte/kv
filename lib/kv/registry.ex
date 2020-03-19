@@ -14,13 +14,13 @@ defmodule KV.Registry do
         {names, _} = state
         {:reply, Map.fetch(names, name), state}
     end
-    
+
     @implt true
     def handle_call(:all, _from, state) do
         {names, _} = state
         {:reply, names, state}
     end
-    
+
     @impl true
     def handle_cast({:create, name}, {names, refs}) do
         if Map.has_key?(names, name) do
@@ -40,7 +40,7 @@ defmodule KV.Registry do
         {name, refs} = Map.pop(refs, ref)
         names = Map.delete(names, name)
         {:noreply, {names, refs}}
-    end 
+    end
 
     @implt true
     def handle_info(_msg, state) do
@@ -71,7 +71,7 @@ defmodule KV.Registry do
     end
 
     @doc """
-    Ensures there is a bucket associated with given `name` in `server`. 
+    Ensures there is a bucket associated with given `name` in `server`.
     """
     def create(server, name) do
         GenServer.cast(server, {:create, name})
