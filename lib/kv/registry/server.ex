@@ -11,9 +11,14 @@ defmodule KV.Registry.Server do
         {:reply, Map.fetch(names, name), state}
     end
 
-    def handle_call(:all, _from, state) do
+    def handle_call({:names, :all}, _from, state) do
         {names, _} = state
         {:reply, names, state}
+    end
+
+    def handle_call({:refs, :all}, _from, state) do
+        {_, refs} = state
+        {:reply, refs, state}
     end
 
     def handle_cast({:create, name}, {names, refs}) do
