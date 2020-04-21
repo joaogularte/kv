@@ -19,8 +19,15 @@ defmodule KV.Registry do
     @doc """
     Returns all buckets stored in `server`
     """
-    def all(server) do
-        GenServer.call(server, :all)
+    def all_buckets(server) do
+        GenServer.call(server, {:names, :all})
+    end
+
+    @doc """
+    Return all buckets refs
+    """
+    def all_refs(server) do
+        GenServer.call(server, {:refs, :all})
     end
 
     @doc """
@@ -29,5 +36,4 @@ defmodule KV.Registry do
     def create(server, name) do
         GenServer.cast(server, {:create, name})
     end
-
 end
