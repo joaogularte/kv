@@ -24,7 +24,13 @@ defmodule KV.RegistryTest do
     test "get all buckets", %{registry: registry} do
         KV.Registry.create(registry, "shopping")
         KV.Registry.create(registry, "market")
-        assert KV.Registry.all(registry)
+        assert KV.Registry.all_buckets(registry)
+    end
+
+    test "get all refs buckets", %{registry: registry} do
+        KV.Registry.create(registry, "shopping")
+        KV.Registry.create(registry, "shopping")
+        assert KV.Registry.all_refs(registry)        
     end
 
     test "removes buckets on exit", %{registry: registry} do
