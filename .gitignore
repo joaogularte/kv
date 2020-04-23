@@ -23,3 +23,5 @@ erl_crash.dump
 kv-*.tar
 
 ./.github/
+
+.elixir_ls/

@@ -8,7 +8,10 @@ defmodule KV.Supervisor do
   @impl true
   def init(:ok) do
     children = [
-      {KV.Registry, [name: KV.Registry]}
+      %{
+        id: KV.Registry,
+        start: {KV.Registry, :start_link, [[name: KV.Registry]]}
+      }
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
