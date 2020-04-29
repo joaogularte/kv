@@ -1,5 +1,6 @@
 defmodule KV.Bucket do
-  use Agent
+  use Agent, restart: :temporary
+
   @moduledoc """
   Providers a group of function in order to manage the bucket
   """
