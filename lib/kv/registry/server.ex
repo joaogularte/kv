@@ -1,8 +1,8 @@
 defmodule KV.Registry.Server do
   use GenServer
 
-  def init(:ok) do
-    names = %{}
+  def init(table) do
+    names = :ets.new(table, [:named_table, read_concurrency: true])
     refs = %{}
     {:ok, {names, refs}}
   end

@@ -1,10 +1,12 @@
 defmodule KV.Registry do
   ## Client API
   @doc """
-  Start the registry
+  Start the registry with given options
+  `:name` is must be informed
   """
   def start_link(opts) do
-    GenServer.start_link(__MODULE__.Server, :ok, opts)
+    server_name = Keyword.fetch!(opts, :name)
+    GenServer.start_link(__MODULE__.Server, server_name, opts)
   end
 
   @doc """
@@ -12,7 +14,15 @@ defmodule KV.Registry do
   Returns `{:ok, pid}` if the bucket exists, `:error` otherwise
   """
   def lookup(server, name) do
-    GenServer.call(server, {:lookup, name})
+
+    case :ets.lookup(server, name) do
+      [{^name, pid}] -> {:ok, pid}
+
+      [] -> :error
+    end 
+    #GenServer.call(server, {:lookup, name})
+  
+  
   end
 
   @doc """
