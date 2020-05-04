@@ -14,15 +14,12 @@ defmodule KV.Registry do
   Returns `{:ok, pid}` if the bucket exists, `:error` otherwise
   """
   def lookup(server, name) do
-
     case :ets.lookup(server, name) do
       [{^name, pid}] -> {:ok, pid}
-
       [] -> :error
-    end 
-    #GenServer.call(server, {:lookup, name})
-  
-  
+    end
+
+    # GenServer.call(server, {:lookup, name})
   end
 
   @doc """
@@ -43,6 +40,6 @@ defmodule KV.Registry do
   Ensures there is a bucket associated with given `name` in `server`.
   """
   def create(server, name) do
-    GenServer.cast(server, {:create, name})
+    GenServer.call(server, {:create, name})
   end
 end
