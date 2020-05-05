@@ -36,8 +36,8 @@ defmodule KV.RegistryTest do
   end
 
   test "get all refs buckets", %{registry: registry} do
-    KV.Registry.create(registry, "mercado")
-    KV.Registry.create(registry, "teta")
+    KV.Registry.create(registry, "shopping")
+    KV.Registry.create(registry, "market")
     assert KV.Registry.all_refs(registry)
   end
 
@@ -45,6 +45,7 @@ defmodule KV.RegistryTest do
     KV.Registry.create(registry, "shopping")
     {:ok, bucket_shopping} = KV.Registry.lookup(registry, "shopping")
     Agent.stop(bucket_shopping)
+    _ = KV.Registry.create(registry, "bogus")
     assert KV.Registry.lookup(registry, "shopping") == :error
   end
 

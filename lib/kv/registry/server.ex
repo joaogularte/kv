@@ -20,8 +20,8 @@ defmodule KV.Registry.Server do
 
   def handle_call({:create, name}, _from, {names, refs}) do
     case :ets.lookup(names, name) do
-      [{^name, _pid}] ->
-        {:noreply, {names, refs}}
+      [{^name, pid}] ->
+        {:reply, pid, {names, refs}}
 
       [] ->
         {:ok, bucket} = DynamicSupervisor.start_child(KV.BucketSupervisor, KV.Bucket)
