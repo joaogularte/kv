@@ -1,20 +1,16 @@
 defmodule KV.Registry.Server do
   use GenServer
 
-  def init(:ok) do
-    names = %{}
+  def init(table) do
+    names = :ets.new(table, [:named_table, read_concurrency: true])
     refs = %{}
     {:ok, {names, refs}}
   end
 
-  def handle_call({:lookup, name}, _from, state) do
-    {names, _} = state
-    {:reply, Map.fetch(names, name), state}
-  end
-
   def handle_call({:names, :all}, _from, state) do
     {names, _} = state
-    {:reply, names, state}
+    names_list = :ets.tab2list(names)
+    {:reply, names_list, state}
   end
 
   def handle_call({:refs, :all}, _from, state) do
@@ -22,22 +18,24 @@ defmodule KV.Registry.Server do
     {:reply, refs, state}
   end
 
-  def handle_cast({:create, name}, {names, refs}) do
-    if Map.has_key?(names, name) do
-      {:noreply, {names, refs}}
-    else
-      {:ok, bucket} = DynamicSupervisor.start_child(KV.BucketSupervisor, KV.Bucket)
-      ref_monitor = Process.monitor(bucket)
-      new_refs = Map.put(refs, ref_monitor, name)
-      new_names = Map.put(names, name, bucket)
-      new_state = {new_names, new_refs}
-      {:noreply, new_state}
+  def handle_call({:create, name}, _from, {names, refs}) do
+    case :ets.lookup(names, name) do
+      [{^name, pid}] ->
+        {:reply, pid, {names, refs}}
+
+      [] ->
+        {:ok, bucket} = DynamicSupervisor.start_child(KV.BucketSupervisor, KV.Bucket)
+        ref_monitor = Process.monitor(bucket)
+        new_refs = Map.put(refs, ref_monitor, name)
+        :ets.insert(names, {name, bucket})
+        new_state = {names, new_refs}
+        {:reply, bucket, new_state}
     end
   end
 
   def handle_info({:DOWN, ref, :process, _pid, _reason}, {names, refs}) do
     {name, refs} = Map.pop(refs, ref)
-    names = Map.delete(names, name)
+    :ets.delete(names, name)
     {:noreply, {names, refs}}
   end
 

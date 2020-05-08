@@ -7,18 +7,17 @@ defmodule KV.RegistryTest do
     IO.puts("Starting Registry test")
   end
 
-  setup do
-    registry =
-      start_supervised!(%{
-        id: KV.Registry,
-        start: {
-          KV.Registry,
-          :start_link,
-          [[]]
-        }
-      })
+  setup context do
+    start_supervised!(%{
+      id: KV.Registry,
+      start: {
+        KV.Registry,
+        :start_link,
+        [[name: context.test]]
+      }
+    })
 
-    %{registry: registry}
+    %{registry: context.test}
   end
 
   test "spaws buckets", %{registry: registry} do
@@ -38,7 +37,7 @@ defmodule KV.RegistryTest do
 
   test "get all refs buckets", %{registry: registry} do
     KV.Registry.create(registry, "shopping")
-    KV.Registry.create(registry, "shopping")
+    KV.Registry.create(registry, "market")
     assert KV.Registry.all_refs(registry)
   end
 
@@ -46,6 +45,7 @@ defmodule KV.RegistryTest do
     KV.Registry.create(registry, "shopping")
     {:ok, bucket_shopping} = KV.Registry.lookup(registry, "shopping")
     Agent.stop(bucket_shopping)
+    _ = KV.Registry.create(registry, "bogus")
     assert KV.Registry.lookup(registry, "shopping") == :error
   end
 
